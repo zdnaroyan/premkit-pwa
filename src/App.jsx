@@ -25,14 +25,6 @@ export default function App() {
   const [apiLive, setApiLive] = useState(false)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
-  const [savedIds, setSavedIds] = useState(() => {
-    try {
-      const raw = localStorage.getItem('premkit_saved_kits')
-      return new Set(raw ? JSON.parse(raw) : [])
-    } catch (_) {
-      return new Set()
-    }
-  })
   const [lightboxImg, setLightboxImg] = useState(null)
 
   const loadData = async () => {
@@ -54,38 +46,20 @@ export default function App() {
     loadData()
   }, [])
 
-  const toggleSave = (kitId) => {
-    setSavedIds((prev) => {
-      const next = new Set(prev)
-      if (next.has(kitId)) next.delete(kitId)
-      else next.add(kitId)
-      try {
-        localStorage.setItem('premkit_saved_kits', JSON.stringify([...next]))
-      } catch (_) {}
-      return next
-    })
-  }
-
   return (
     <BrowserRouter>
       <ScrollToTop />
-      <div className="stage-watermark" aria-hidden="true">
-        <span>PREMKIT</span>
-        <span>ARCHIVE</span>
-        <span>PREMKIT</span>
-      </div>
-
-      <div className="phone-frame">
+      <div className="app-shell">
         <main className="app-main">
           {loading ? (
             <div className="empty-msg" style={{ paddingTop: '140px' }}>
-              Loading classic archive...
+              Memuat arsip jersey klasik...
             </div>
           ) : error ? (
             <div className="empty-msg" style={{ paddingTop: '120px' }}>
               <p style={{ marginBottom: '16px' }}>{error}</p>
               <button type="button" className="black-pill-btn" onClick={loadData}>
-                RETRY
+                COBA LAGI
               </button>
             </div>
           ) : (
@@ -98,8 +72,6 @@ export default function App() {
                   <JerseyDetail
                     jerseys={jerseys}
                     clubs={clubs}
-                    savedIds={savedIds}
-                    onToggleSave={toggleSave}
                     onInspect={setLightboxImg}
                   />
                 }
@@ -108,13 +80,7 @@ export default function App() {
               <Route path="/clubs/:id" element={<ClubDetail clubs={clubs} jerseys={jerseys} />} />
               <Route
                 path="/about"
-                element={
-                  <About
-                    clubsCount={clubs.length}
-                    savedCount={savedIds.size}
-                    apiLive={apiLive}
-                  />
-                }
+                element={<About clubsCount={clubs.length} apiLive={apiLive} />}
               />
             </Routes>
           )}

@@ -1,6 +1,8 @@
 :root {
-  --bg-stage: #d4d1cd;
   --bg-canvas: #ffffff;
+  --bg-stone-light: #e7e4e0;
+  --bg-stone-mid: #b6b1ab;
+  --bg-stone-dark: #7d7975;
   --ink-black: #111111;
   --ink-muted: #7e7e7e;
   --line-hairline: #ececec;
@@ -20,7 +22,7 @@
 html,
 body {
   min-height: 100%;
-  background: var(--bg-stage);
+  background: var(--bg-canvas);
   color: var(--ink-black);
   font-family: var(--font-sans);
   font-variant-numeric: tabular-nums;

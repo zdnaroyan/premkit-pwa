@@ -13,10 +13,10 @@ export default function Lightbox({ image, onClose }) {
       className={`lightbox ${image ? 'open' : ''}`}
       role="dialog"
       aria-modal="true"
-      aria-label="Inspect Classic Jersey"
+      aria-label="Tampilan Detail Gambar Jersey"
       onClick={(e) => e.target === e.currentTarget && onClose()}
     >
-      <button type="button" className="lightbox-close" onClick={onClose} aria-label="Close">
+      <button type="button" className="lightbox-close" onClick={onClose} aria-label="Tutup">
         &times;
       </button>
       {image && <img src={image.src} alt={image.alt} />}

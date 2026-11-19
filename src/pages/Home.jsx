@@ -54,89 +54,91 @@ export default function Home({ clubs, jerseys }) {
   return (
     <div className="view-enter">
       <Header />
-      <div className="search-wrap">
-        <div className="search-pill">
-          <Search size={16} strokeWidth={1.8} />
-          <input
-            type="text"
-            placeholder="Search"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-          {query && (
-            <button
-              type="button"
-              className="search-clear"
-              onClick={() => setQuery('')}
-              aria-label="Clear"
-            >
-              &times;
-            </button>
-          )}
-        </div>
-      </div>
-
-      {!q && activeHero && (
-        <div className="hero-wrap">
-          <article
-            className="hero-banner"
-            onClick={() => navigate(`/jerseys/${activeHero.id}`)}
-          >
-            {jerseys.map((j, i) => (
-              <div
-                key={j.id}
-                className={`hero-slide ${i === heroIdx ? 'active' : ''} ${i === leavingIdx ? 'leaving' : ''}`}
+      <div className="content-container">
+        <div className="search-wrap">
+          <div className="search-pill">
+            <Search size={16} strokeWidth={1.8} />
+            <input
+              type="text"
+              placeholder="Cari jersey, klub, atau musim..."
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+            {query && (
+              <button
+                type="button"
+                className="search-clear"
+                onClick={() => setQuery('')}
+                aria-label="Hapus pencarian"
               >
-                <img src={j.image_url} alt={j.title} />
-              </div>
-            ))}
-            <div className="hero-caption-wrap">
-              <span className="hero-caption">CLASSIC COLLECTION</span>
-              <span className="hero-subcaption">
-                {activeHero.clubs?.name} &middot; {activeHero.season}
-              </span>
-            </div>
-          </article>
+                &times;
+              </button>
+            )}
+          </div>
         </div>
-      )}
 
-      <div className="section-head">
-        <h2 className="section-label">{q ? 'SEARCH RESULTS' : 'CLASSIC KITS'}</h2>
-        <button type="button" className="section-link" onClick={() => navigate('/jerseys')}>
-          View All
-        </button>
-      </div>
+        {!q && activeHero && (
+          <div className="hero-wrap">
+            <article
+              className="hero-banner"
+              onClick={() => navigate(`/jerseys/${activeHero.id}`)}
+            >
+              {jerseys.map((j, i) => (
+                <div
+                  key={j.id}
+                  className={`hero-slide ${i === heroIdx ? 'active' : ''} ${i === leavingIdx ? 'leaving' : ''}`}
+                >
+                  <img src={j.image_url} alt={j.title} />
+                </div>
+              ))}
+              <div className="hero-caption-wrap">
+                <span className="hero-caption">KOLEKSI KLASIK</span>
+                <span className="hero-subcaption">
+                  {activeHero.clubs?.name} &middot; {activeHero.season}
+                </span>
+              </div>
+            </article>
+          </div>
+        )}
 
-      {filtered.length ? (
-        !q ? (
-          <div className="kit-marquee">
-            <div className="kit-marquee-track">
-              {[...filtered, ...filtered].map((j, idx) => renderKitCard(j, `${j.id}-${idx}`))}
+        <div className="section-head">
+          <h2 className="section-label">{q ? 'HASIL PENCARIAN' : 'JERSEY KLASIK'}</h2>
+          <button type="button" className="section-link" onClick={() => navigate('/jerseys')}>
+            Lihat Semua
+          </button>
+        </div>
+
+        {filtered.length ? (
+          !q ? (
+            <div className="kit-marquee">
+              <div className="kit-marquee-track">
+                {[...filtered, ...filtered].map((j, idx) => renderKitCard(j, `${j.id}-${idx}`))}
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className="kit-strip">
+              {filtered.map((j) => renderKitCard(j, j.id))}
+            </div>
+          )
         ) : (
-          <div className="kit-strip">
-            {filtered.map((j) => renderKitCard(j, j.id))}
-          </div>
-        )
-      ) : (
-        <div className="empty-msg">No classic jersey found for &ldquo;{query}&rdquo;.</div>
-      )}
+          <div className="empty-msg">Jersey klasik untuk &ldquo;{query}&rdquo; tidak ditemukan.</div>
+        )}
 
-      <div className="section-head">
-        <h2 className="section-label">CLUB ARCHIVE</h2>
-        <button type="button" className="section-link" onClick={() => navigate('/clubs')}>
-          {clubs.length} Clubs
-        </button>
-      </div>
+        <div className="section-head">
+          <h2 className="section-label">ARSIP KLUB</h2>
+          <button type="button" className="section-link" onClick={() => navigate('/clubs')}>
+            {clubs.length} Klub
+          </button>
+        </div>
 
-      <div className="looks-strip">
-        {clubs.map((c) => (
-          <article key={c.id} className="look-card" onClick={() => navigate(`/clubs/${c.id}`)}>
-            <img src={c.logo_url} alt={c.name} loading="lazy" />
-            <span className="look-club-label">{c.name}</span>
-          </article>
-        ))}
+        <div className="looks-strip">
+          {clubs.map((c) => (
+            <article key={c.id} className="look-card" onClick={() => navigate(`/clubs/${c.id}`)}>
+              <img src={c.logo_url} alt={c.name} loading="lazy" />
+              <span className="look-club-label">{c.name}</span>
+            </article>
+          ))}
+        </div>
       </div>
     </div>
   )
